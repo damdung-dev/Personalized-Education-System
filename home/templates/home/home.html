@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Clone</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f6f7fa;
+    }
+
+    /* Top Bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .nav-links a {
+      margin-right: 20px;
+      color: #1a73e8;
+      font-size: 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .search-box input {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+
+    .search-box button {
+      padding: 6px 10px;
+      margin-left: 4px;
+      font-size: 14px;
+    }
+
+    /* Layout */
+    .layout {
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: white;
+      padding: 25px 20px;
+      border-right: 1px solid #ddd;
+      height: calc(100vh - 55px);
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      padding: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex-grow: 1;
+      padding: 30px 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+      padding: 25px 30px;
+      margin-bottom: 25px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .card .sub {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .status-boxes {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .status {
+      flex: 1;
+      border-radius: 15px;
+      text-align: center;
+      padding: 20px 0;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .status span {
+      display: block;
+      font-size: 18px;
+      margin-top: 5px;
+    }
+
+    .assigned {
+      background: #ffa500;
+    }
+
+    .sent {
+      background: #ffeb3b;
+      color: black;
+    }
+
+    .signed {
+      background: #2196f3;
+    }
+
+    .approved {
+      background: #4caf50;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-links">
+      <a href="#">Reports</a>
+      <a href="#">Centers</a>
+      <a href="#">Teachers</a>
+      <a href="#">Help</a>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Quick page find">
+      <button>Search</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <ul>
+        <li>Account</li>
+        <li>Dashboard</li>
+        <li>Courses</li>
+        <li>Results</li>
+        <li>Documents</li>
+        <li>Calendar</li>
+        <li>Chat</li>
+        <li>Notifications</li>
+        <li>Exit</li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <section class="card">
+        <h2>Supervised Staff</h2>
+        <p class="sub">My Dashboard</p>
+      </section>
+
+      <section class="card">
+        <h2>Today's Schedule</h2>
+        <p><strong>04:26 PM</strong> – Science 6</p>
+      </section>
+
+      <section class="card">
+        <h2>Master Agreements as of 01/08/2024</h2>
+        <div class="status-boxes">
+          <div class="status assigned">Assigned<br><span>10</span></div>
+          <div class="status sent">Sent<br><span>1</span></div>
+          <div class="status signed">Signed<br><span>0</span></div>
+          <div class="status approved">Approved<br><span>0</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Today's Engagement</h2>
+        <p>Barrett, Marie — Fey, Tina — Fox, Johnny — Henry, Daniel</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
