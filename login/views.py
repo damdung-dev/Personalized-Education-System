@@ -9,11 +9,11 @@ def index(request):
 
 def home_view(request):
     if request.method == 'POST':
-        username = request.POST.get('id')
+        email = request.POST.get('id')
         password = request.POST.get('password')
 
         try:
-            user = Student.objects.get(email=username)
+            user = Student.objects.get(email=email)
         except Student.DoesNotExist:
             messages.error(request, "Email không tồn tại.")
             return render(request,'login/login.html')

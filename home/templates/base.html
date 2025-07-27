@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Welcome to personalized education system{% endblock %}</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      height:100%;
+      background: #f4f6f9;
+    }
+
+    /* Top Bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .nav-links a {
+      margin-right: 20px;
+      color: #1a73e8;
+      font-size: 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .search-box input {
+      border-radius:20px;
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+
+    .search-box button {
+      border-radius:20px;
+      padding: 6px 10px;
+      margin-left: 4px;
+      font-size: 14px;
+    }
+
+    /* Layout */
+    .layout {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #ffffff;
+      padding: 25px 0px;
+      border-right: 1px solid #ddd;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      padding: 18px 0;
+      font-size: 16px;
+      cursor: pointer;
+      padding-left: 30px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #1a73e8;
+      display: block;
+    }
+
+    .sidebar li:hover {
+      background-color: #f0f1f4;
+    }
+
+
+
+    /* Main Content */
+    .main-content {
+      flex-grow: 1;
+      padding: 30px 40px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+      padding: 25px 30px;
+      margin-bottom: 25px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .card .sub {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .status-boxes {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .status {
+      flex: 1;
+      border-radius: 15px;
+      text-align: center;
+      padding: 20px 0;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .status span {
+      display: block;
+      font-size: 18px;
+      margin-top: 5px;
+    }
+
+    .assigned {
+      background: #ffb300;
+    }
+
+    .sent {
+      background: #fdd835;
+      color: black;
+    }
+
+    .signed {
+      background: #1e88e5;
+    }
+
+    .approved {
+      background: #43a047;
+    }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #ddd;
+      padding: 15px 30px;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .footer-content {
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .footer-links a {
+      color: #1a73e8;
+      text-decoration: none;
+      margin-left: 15px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-links">
+      <a href="#">Reports</a>
+      <a href="#">Centers</a>
+      <a href="#">Teachers</a>
+      <a href="#">Help</a>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Quick page find">
+      <button>Search</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="{% url 'account' %}">Account</a></li>
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'courses' %}">Courses</a></li>
+        <li><a href="{% url 'results' %}">Results</a></li>
+        <li><a href="{% url 'documents' %}">Documents</a></li>
+        <li><a href="{% url 'calendar' %}">Calendar</a></li>
+        <li><a href="{% url 'chat' %}">Chat</a></li>
+        <li><a href="{% url 'notifications' %}">Notifications</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      {% block content %}
+      
+      {% endblock %}
+    </main>
+  </div>
+</body>
+  <footer class="footer">
+    <center><div class="footer-content">
+      <p>Bản quyền thuộc về Đàm Đức Dũng - lớp 25Python01 - 24</p>
+    </div></center>
+  </footer>
+</html>
