@@ -1,12 +1,14 @@
-<!-- templates/home.html -->
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block title %}Courses{% endblock %}
-
 {% block content %}
-  <section class="card">
-    <h2>Supervised Staff</h2>
-    <p class="sub">My Courses</p>
-  </section>
-
+<div class="card" style="margin: 0 auto;">
+  <h2>Courses</h2>
+  <p class="sub">Danh sách khóa học hiện tại.</p>
+  <ul>
+    <li>✔️ Toán học 6</li>
+    <li>✔️ Khoa học 6</li>
+    <li>✔️ Ngữ văn 6</li>
+    <li>✔️ Tiếng Anh nâng cao</li>
+  </ul>
+</div>
 {% endblock %}

@@ -1,47 +1,34 @@
-<!-- templates/home.html -->
 {% extends 'base.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <div class="main-content">
-
   <div class="card welcome">
-    <h2>Welcome back, Mr. Dung 👋</h2>
-    <p class="sub">Here's what's happening today</p>
-  </div>
-
-  <div class="card schedule">
-    <h2>Today's Schedule</h2>
-    <p><strong>08:00 AM</strong> — Math 8</p>
-    <p><strong>09:15 AM</strong> — Science 6</p>
+    <h2>Welcome to the Dashboard</h2>
+    <p class="sub">Hi Mr. Dung, explore your account and activities here.</p>
   </div>
 
   <div class="card stats">
-    <h2>Quick Overview</h2>
+    <h2>Quick Stats</h2>
     <div class="status-boxes">
-      <div class="status assigned">Staff<br><span>5</span></div>
-      <div class="status sent">Courses<br><span>12</span></div>
-      <div class="status signed">Students<br><span>85</span></div>
-      <div class="status approved">Online Now<br><span>14</span></div>
+      <div class="status assigned">Courses<br><span>4</span></div>
+      <div class="status sent">Results<br><span>3 Completed</span></div>
+      <div class="status signed">Documents<br><span>5 Uploaded</span></div>
+      <div class="status approved">Progress<br><span>87%</span></div>
     </div>
   </div>
 
-  <div class="card agreements">
-    <h2>Master Agreements as of 01/08/2024</h2>
-    <div class="status-boxes">
-      <div class="status assigned">Assigned<br><span>10</span></div>
-      <div class="status sent">Sent<br><span>1</span></div>
-      <div class="status signed">Signed<br><span>0</span></div>
-      <div class="status approved">Approved<br><span>0</span></div>
-    </div>
+  <div class="card schedule">
+    <h2>Today’s Schedule</h2>
+    <p><strong>09:00 AM:</strong> IELTS Reading Practice</p>
+    <p><strong>10:30 AM:</strong> Vocabulary Review</p>
+    <p><strong>02:00 PM:</strong> Mock Speaking Test</p>
   </div>
 
   <div class="card engagement">
-    <h2>Today's Engagement</h2>
-    <p class="sub">Barrett, Marie — Fey, Tina — Fox, Johnny — Henry, Daniel</p>
+    <h2>Actions</h2>
+    <p class="sub">What do you want to do next?</p>
+    <button class="btn">Go to Courses</button>
+    <button class="btn">Check Results</button>
   </div>
-
-</div>
-
 {% endblock %}

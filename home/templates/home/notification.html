@@ -1,12 +1,12 @@
-<!-- templates/home.html -->
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block title %}Notifications{% endblock %}
-
 {% block content %}
-  <section class="card">
-    <h2>Supervised Staff</h2>
-    <p class="sub">My Notifications</p>
-  </section>
-
+<div class="card" style="margin: 0 auto;">
+  <h2>Notifications</h2>
+  <p class="sub">Thông báo mới nhất từ hệ thống.</p>
+  <ul>
+    <li>🔔 Bạn có 1 bài kiểm tra vào ngày 05/08/2025</li>
+    <li>🔔 Tài liệu ôn tập đã được cập nhật</li>
+  </ul>
+</div>
 {% endblock %}

@@ -13,7 +13,7 @@
     }
 
     html, body {
-      height: 100%;
+      height: 100vh;
     }
 
     body {
@@ -35,7 +35,7 @@
       background: white;
       padding: 8px 16px;
       border-bottom: 1px solid #ddd;
-      height: 56px;
+      height: 60px;
     }
 
     .nav-links a {
@@ -194,7 +194,10 @@
     .footer-links a:hover {
       text-decoration: underline;
     }
+
+    
   </style>
+{% block style %}{% endblock %}
 </head>
 <body>
   <header class="topbar">

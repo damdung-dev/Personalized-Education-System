@@ -1,12 +1,13 @@
-<!-- templates/home.html -->
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block title %}Calendar{% endblock %}
-
 {% block content %}
-  <section class="card">
-    <h2>Supervised Staff</h2>
-    <p class="sub">My Calendar</p>
-  </section>
-
+<div class="card" style="margin: 0 auto;">
+  <h2>Calendar</h2>
+  <p class="sub">Lịch học và sự kiện sắp tới.</p>
+  <ul>
+    <li>🗓️ 02/08/2025 - Buổi học Toán nâng cao</li>
+    <li>🗓️ 05/08/2025 - Kiểm tra giữa kỳ</li>
+    <li>🗓️ 10/08/2025 - Buổi tư vấn định hướng</li>
+  </ul>
+</div>
 {% endblock %}

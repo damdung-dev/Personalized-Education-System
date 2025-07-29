@@ -5,74 +5,72 @@
 <style>
   .profile-container {
     max-width: 700px;
+    width: 100%;
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    padding: 32px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f6f8fa;
-    margin: 0px auto 0 auto; /* Thêm margin-top: 32px để tránh bị dính topbar */
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    padding: 30px 35px;
+    margin: auto;
   }
 
-
   .profile-container h2 {
-    font-size: 28.8px;
-    font-weight: 600;
-    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
     color: #1d1d1f;
   }
 
-  .profile-container .form-group {
-    margin-bottom: 19.2px;
+  .form-group {
+    margin-bottom: 20px;
   }
 
-  .profile-container label {
+  .form-group label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 15.2px;
+    margin-bottom: 6px;
+    font-size: 14px;
     color: #3c3c43;
   }
 
-  .profile-container input[type="text"],
-  .profile-container input[type="email"],
-  .profile-container input[type="date"],
-  .profile-container select {
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="date"],
+  .form-group select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d1d6;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 15px;
     background-color: #f9f9f9;
   }
 
-  .profile-container input:disabled {
+  input:disabled {
     background-color: #f0f0f5;
     color: #888;
   }
 
-  .profile-container .sub-note {
-    font-size: 13.6px;
+  .sub-note {
+    font-size: 13px;
     color: #6e6e73;
-    margin-top: 3.2px;
+    margin-top: 4px;
   }
 
-  .profile-container .required {
+  .required {
     color: red;
-    margin-right: 4.8px;
+    margin-right: 5px;
   }
 
-  .profile-container .submit-btn {
-    margin-top: 32px;
+  .submit-btn {
+    margin-top: 25px;
     background-color: #0071e3;
     color: #fff;
-    padding: 12.8px 24px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 15px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
   }
 
-  .profile-container .submit-btn:hover {
+  .submit-btn:hover {
     background-color: #005bb5;
   }
 </style>
@@ -108,31 +106,31 @@
 
     <div class="form-group">
       <label for="phone"><span class="required">*</span>Số điện thoại</label>
-      <input type="text" id="phone" value="+84 374869954">
+      <input type="text" id="phone" name="phone" value="+84 374869954" required>
     </div>
 
     <div class="form-group">
       <label for="email"><span class="required">*</span>Email liên hệ</label>
-      <input type="email" id="email" value="damdungtienganh@gmail.com">
+      <input type="email" id="email" name="email" value="damdungtienganh@gmail.com" required>
     </div>
 
     <div class="form-group">
       <label for="dob">Ngày sinh</label>
-      <input type="date" id="dob" value="2001-09-22">
+      <input type="date" id="dob" name="dob" value="2001-09-22">
     </div>
 
     <div class="form-group">
       <label for="career">Nghề nghiệp</label>
-      <select id="career">
-        <option>Sinh viên</option>
-        <option>Giáo viên</option>
-        <option selected>Khác</option>
+      <select id="career" name="career">
+        <option {% if career == 'Sinh viên' %}selected{% endif %}>Sinh viên</option>
+        <option {% if career == 'Giáo viên' %}selected{% endif %}>Giáo viên</option>
+        <option {% if career == 'Khác' %}selected{% endif %}>Khác</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="other">Cụ thể</label>
-      <input type="text" id="other" value="nhân viên toàn thời gian">
+      <input type="text" id="other" name="other" value="nhân viên toàn thời gian">
     </div>
 
     <button type="submit" class="submit-btn">Cập nhật thông tin</button>
