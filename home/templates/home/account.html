@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Tài khoản{% endblock %}
 
-{% block content %}
+{% block title %}Thông tin tài khoản{% endblock %}
+
+{% block style %}
 <style>
   .profile-container {
     max-width: 700px;
@@ -10,7 +11,7 @@
     border-radius: 20px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
     padding: 30px 35px;
-    margin: auto;
+    margin:auto;
   }
 
   .profile-container h2 {
@@ -18,10 +19,6 @@
     font-weight: bold;
     margin-bottom: 20px;
     color: #1d1d1f;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
   }
 
   .form-group label {
@@ -74,13 +71,13 @@
     background-color: #005bb5;
   }
 </style>
+{% endblock %}
 
+{% block content %}
 <div class="profile-container">
   <h2>Thông tin tài khoản</h2>
-
   <form method="post">
     {% csrf_token %}
-
     <div class="form-group">
       <label for="name">Tên</label>
       <input type="text" id="name" value="dung" disabled>
