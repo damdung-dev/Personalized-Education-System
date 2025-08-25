@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Documents{% endblock %}
+
+{% block style %}
+<style>
+:root{
+  --primary-color:#007aff;
+  --success-color:#28a745;
+  --danger-color:#ff3b30;
+  --card-bg:rgba(255,255,255,0.85);
+  --card-shadow: rgba(0,0,0,0.15);
+  --border-radius:20px;
+  --transition-speed:0.3s;
+}
+
+/* Container */
+.container{ max-width:1100px; margin:40px auto; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+
+/* Cards */
+.card{ background:var(--card-bg); backdrop-filter: blur(14px); border-radius:var(--border-radius); box-shadow:0 12px 28px var(--card-shadow); padding:24px; margin-bottom:32px; transition: all var(--transition-speed); }
+.card:hover{ transform: translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,0.2); }
+
+/* Headers */
+.card h2{ margin-top:0; font-size:24px; font-weight:700; }
+.header-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+.btn-group{ display:flex; gap:10px; }
+.btn{ padding:6px 14px; border:none; border-radius:20px; cursor:pointer; font-weight:600; transition:all var(--transition-speed); background:var(--primary-color); color:#fff; }
+.btn:hover{ transform: scale(1.05); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+
+/* Book list */
+.book-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.book-list li{ padding:10px 14px; border-radius:12px; background:rgba(0,0,0,0.02); transition:all var(--transition-speed); cursor:pointer; }
+.book-list li:hover{ background:rgba(0,122,255,0.1); transform:scale(1.02); }
+
+/* Grid for recommended */
+.book-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:20px; margin-top:16px; }
+.book-item{ background:rgba(255,255,255,0.9); border-radius:16px; box-shadow:0 8px 20px rgba(0,0,0,0.12); overflow:hidden; transition:all var(--transition-speed); }
+.book-item:hover{ transform: translateY(-4px); box-shadow:0 12px 28px rgba(0,0,0,0.2); }
+.book-image img{ width:100%; aspect-ratio:3/4; object-fit:cover; display:block; }
+.book-info{ padding:12px; }
+.book-info h3{ font-size:16px; margin:0 0 4px 0; }
+.price{ color:var(--success-color); font-weight:600; }
+
+/* Read button */
+.btn-read{ width:100%; text-align:center; background:var(--primary-color); color:#fff; padding:6px 0; border-radius:12px; margin-top:6px; transition: all var(--transition-speed); }
+.btn-read:hover{ background: linear-gradient(135deg,#007aff,#00cfff); transform:scale(1.05); }
+
+/* Modal */
+.modal{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:999; }
+.modal-content{ background:#fff; border-radius:16px; max-width:90%; max-height:90%; overflow:hidden; animation:fadeIn 0.3s; }
+.close{ position:absolute; top:10px; right:14px; font-size:24px; cursor:pointer; color:#333; }
+
+/* Animations */
+@keyframes fadeIn{ from{opacity:0; transform:scale(0.95);} to{opacity:1; transform:scale(1);} }
+
+/* Dark mode */
+@media(prefers-color-scheme:dark){
+  .card, .book-item, .modal-content{ background:rgba(40,40,40,0.85); color:#fff; }
+  .book-list li{ background:rgba(255,255,255,0.05); color:#ddd; }
+  .btn, .btn-read{ background:#007aff; color:#fff; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Thư viện của tôi -->
+  <div class="card">
+    <div class="header-row">
+      <h2>Thư viện của tôi</h2>
+      <div class="btn-group">
+        <button class="btn">Thêm</button>
+        <button class="btn">Xóa</button>
+        <button class="btn">Xem: Cột</button>
+      </div>
+    </div>
+    <label class="count-label">Số lượng sách: {{ my_documents_count }}</label>
+    <ul class="book-list list-view">
+      {% if documents %}
+        {% for doc in documents %}
+          <li>📘 <a href="{{ doc.file.url }}" target="_blank">{{ doc.title }}</a> - {{ doc.uploaded_at|date:"d/m/Y" }}</li>
+        {% endfor %}
+      {% else %}
+        <li>📘 Danh sách trống</li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <!-- Sách chia sẻ -->
+  <div class="card">
+    <div class="header-row">
+      <h2>Sách chia sẻ</h2>
+      <div class="btn-group">
+        <button class="btn">Thêm</button>
+        <button class="btn">Xóa</button>
+        <button class="btn">Xem: Cột</button>
+      </div>
+    </div>
+    <label class="count-label">Số lượng sách: Chưa có sách chia sẻ</label>
+    <ul class="book-list column-view">
+      <li>📙 Danh sách trống</li>
+    </ul>
+  </div>
+
+  <!-- Sách tuyển chọn -->
+  <div class="card">
+    <h2>Đầu sách tuyển chọn</h2>
+    <label class="count-label">Số lượng sách: {{ recommend_count }}</label>
+    <div class="book-grid">
+      {% for recommend in recommend_books %}
+        <div class="book-item">
+          <div class="book-image">
+            {% if recommend.cover %}
+              <img src="{{ recommend.cover.url }}" alt="{{ recommend.title }}">
+            {% else %}
+              <img src="{% static 'images/default_cover.jpg' %}" alt="{{ recommend.title }}">
+            {% endif %}
+          </div>
+          <div class="book-info">
+            <h3>{{ recommend.title }}</h3>
+            {% if recommend.price %}<p class="price">{{ recommend_books.price|floatformat:0 }}₫</p>{% endif %}
+          </div>
+          <form class="book-actions" action="{{ recommend.file.url }}" method="get" target="_blank">
+            <button type="submit" class="btn-read">📖 Đọc ngay</button>
+          </form>
+        </div>
+      {% empty %}
+        <p>Chưa có sách tuyển chọn</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Modal PDF -->
+<div id="pdfModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePDF()">&times;</span>
+    <iframe id="pdfViewer" width="100%" height="600px"></iframe>
+  </div>
+</div>
+
+{% block script %}
+<script src="{% static 'home/js/documents.js' %}"></script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,109 @@
+.chat-container {
+    max-width: 700px;
+    width: 95%; /* co theo màn hình */
+    height: 80vh; /* chiếm 80% chiều cao màn hình */
+    margin: 20px auto; /* cách lề trên + dưới */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.chat-header {
+    padding: 12px;
+    background-color: #007aff;
+    color: white;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 15px;
+    clear: both;
+    transition: background 0.3s;
+    word-wrap: break-word;
+}
+
+.chat-message.user {
+    background-color: #dcf8c6;
+    margin-left: auto;
+    text-align: right;
+}
+
+.chat-message.assistant {
+    background-color: #fff;
+    margin-right: auto;
+    text-align: left;
+}
+
+.chat-message.new-message {
+    box-shadow: 0 0 8px 2px rgba(0, 122, 255, 0.5);
+}
+
+.chat-input {
+    display: flex;
+    padding: 8px;
+    border-top: 1px solid #ddd;
+    flex-shrink: 0;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1rem;
+}
+
+.chat-input button {
+    margin-left: 8px;
+    padding: 8px 16px;
+    background-color: #007aff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.chat-input button:hover {
+    background-color: #005bb5;
+}
+
+/* Responsive nhỏ hơn 480px */
+@media (max-width: 480px) {
+    .chat-container {
+        height: 90vh;
+    }
+
+    .chat-header {
+        font-size: 1.1rem;
+    }
+
+    .chat-input input {
+        font-size: 0.9rem;
+    }
+
+    .chat-input button {
+        font-size: 0.9rem;
+    }
+
+    .chat-message {
+        font-size: 0.95rem;
+        max-width: 80%;
+    }
+}

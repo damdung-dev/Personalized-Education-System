@@ -1,0 +1,66 @@
+.profile-container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    padding: 30px 35px;
+    margin:auto;
+  }
+
+  .profile-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #1d1d1f;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #3c3c43;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="date"],
+  .form-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: #f9f9f9;
+  }
+
+  input:disabled {
+    background-color: #f0f0f5;
+    color: #888;
+  }
+
+  .sub-note {
+    font-size: 13px;
+    color: #6e6e73;
+    margin-top: 4px;
+  }
+
+  .required {
+    color: red;
+    margin-right: 5px;
+  }
+
+  .submit-btn {
+    margin-top: 25px;
+    background-color: #0071e3;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 15px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .submit-btn:hover {
+    background-color: #005bb5;
+  }

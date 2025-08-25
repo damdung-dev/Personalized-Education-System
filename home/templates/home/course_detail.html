@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ course.course_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Tiêu đề khóa học -->
+    <div class="card shadow-lg border-0 rounded-4 mb-5">
+        <div class="card-body text-center py-4">
+            <h1 class="text-muted">Danh sách bài học</h1>
+        </div>
+    </div>
+
+    <!-- Danh sách bài học -->
+    <div class="row g-4">
+        {% for lesson in lessons %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 rounded-4 shadow-lg overflow-hidden">
+                
+                <center><div class="text-center text-white fw-bold py-3" style="background: linear-gradient(135deg, #1e3c72, #2a5298); color:white;">
+                    <h2>
+                        {{ lesson.lesson_name }}
+                    </h2>
+                </div></center>
+
+                <!-- Nội dung -->
+                <div class="card-body p-4">
+                    <p class="mb-2"><strong>Mô tả:</strong> {{ lesson.description|default:"Chưa có mô tả" }}</p>
+                    <p class="mb-0"><strong>Ngày khai giảng:</strong> {{ lesson.start_date|date:"d/m/Y" }}</p>
+                </div>
+
+                <!-- Footer (nút full width) -->
+                <div class="p-0">
+                    <center>
+                        <button onclick="window.location.href=''" style="padding:5px 10px; border:none; background-color:#ff0000; color:white; border-radius:20px;">
+                            🚀 Vào học ngay
+                        </button>
+                    </center>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Chưa có bài học nào cho khóa học này.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

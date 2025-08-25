@@ -1,0 +1,126 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+  }
+  .btn:hover {
+    background-color: #45a049;
+  }
+  .btn-buy {
+    background-color: #ff6600;
+  }
+  .btn-buy:hover {
+    background-color: #e55b00;
+  }
+  .count-label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #555;
+  }
+  ul.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.book-list.list-view li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+  }
+  ul.book-list.column-view {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  ul.book-list.column-view li {
+    width: 150px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0 0 3px #ddd;
+  }
+
+  /* Recommend Books grid */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .book-item {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .book-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .book-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .book-info h3 {
+    font-size: 16px;
+    margin: 6px 0;
+    color: #333;
+  }
+  .price {
+    color: #e60023;
+    font-weight: bold;
+    margin: 6px 0 10px 0;
+  }
+  .book-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+  }
+  .modal-content {
+    background: #fff;
+    margin: 50px auto;
+    padding: 20px;
+    width: 80%;
+    border-radius: 8px;
+  }
+  .close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+  }

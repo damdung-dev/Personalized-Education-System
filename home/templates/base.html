@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Personalized Education System{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'home/css/base.css' %}">
+  <style>
+    /* Reset & Root */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    :root {
+      --primary: #007aff;
+      --bg: #f0f2f5;
+      --card-bg: rgba(255,255,255,0.85);
+      --card-shadow: rgba(0,0,0,0.15);
+      --radius: 16px;
+    }
+    body { background: var(--bg); display:flex; flex-direction:column; min-height:100vh; }
+
+    /* Header */
+    header.topbar {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 24px; background: var(--card-bg); backdrop-filter: blur(12px);
+      box-shadow:0 8px 20px var(--card-shadow); position:sticky; top:0; z-index:1000; border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    }
+    header.topbar .nav-links a {
+      margin-right:20px; text-decoration:none; color:#111; font-weight:500; transition:0.2s;
+    }
+    header.topbar .nav-links a:hover { color: var(--primary); }
+    header.topbar .search-box { display:flex; align-items:center; }
+    header.topbar .search-box input { padding:6px 12px; border:none; border-radius:12px 0 0 12px; outline:none; width:180px; }
+    header.topbar .search-box button { padding:6px 12px; border:none; background: var(--primary); color:#fff; border-radius:0 12px 12px 0; cursor:pointer; transition:0.3s; }
+    header.topbar .search-box button:hover { background:#005bb5; }
+
+    /* Layout */
+    .layout { display:flex; flex:1; min-height:calc(100vh - 80px); }
+
+    /* Sidebar */
+    aside.sidebar {
+      width:220px; background: var(--card-bg); backdrop-filter: blur(12px);
+      padding:20px 12px; border-right:1px solid rgba(0,0,0,0.08); height:calc(100vh - 80px); position:sticky; top:80px; overflow-y:auto;
+    }
+    aside.sidebar ul { list-style:none; padding-left:0; }
+    aside.sidebar ul li { margin:12px 0; }
+    aside.sidebar ul li a {
+      display:block; padding:10px 16px; border-radius:12px; color:#111; text-decoration:none; font-weight:500; transition:0.3s;
+    }
+    aside.sidebar ul li a:hover, aside.sidebar ul li a.active { background: var(--primary); color:#fff; transform:scale(1.02); }
+    aside.sidebar ul li.exit-btn a { background:#ff3b30; color:#fff; }
+
+    /* Main content */
+    main.main-content { flex:1; padding:32px 24px; overflow-x:auto; }
+
+    /* Footer */
+    footer.footer { padding:12px 24px; text-align:center; background: var(--card-bg); backdrop-filter: blur(12px); box-shadow:0 -4px 20px var(--card-shadow); font-size:14px; color:#555; margin-top:auto; }
+
+    /* Dark mode */
+    @media(prefers-color-scheme:dark){
+      body { background:#121212; color:#ddd; }
+      header.topbar, aside.sidebar, footer.footer { background: rgba(30,30,30,0.85); }
+      header.topbar .nav-links a, aside.sidebar ul li a { color:#ccc; }
+      header.topbar .nav-links a:hover, aside.sidebar ul li a:hover, aside.sidebar ul li a.active { color:#fff; }
+      header.topbar .search-box button { background: var(--primary); }
+    }
+
+    /* Responsive */
+    @media(max-width:992px){
+      aside.sidebar { width:60px; padding:12px 6px; }
+      aside.sidebar ul li a { font-size:0; justify-content:center; padding:10px 6px; }
+      aside.sidebar ul li a::before { content:attr(data-icon); display:block; font-size:20px; margin-bottom:4px; }
+      main.main-content { padding:24px 12px; }
+    }
+    @media(max-width:768px){
+      .layout { flex-direction:column; }
+      aside.sidebar { width:100%; height:auto; position:relative; border-right:none; border-bottom:1px solid rgba(0,0,0,0.08); }
+    }
+
+    /* Scrollbar */
+    aside.sidebar::-webkit-scrollbar { width:6px; }
+    aside.sidebar::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.2); border-radius:3px; }
+  </style>
+
+  {% block style %}{% endblock %}
+</head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="nav-links">
+      <a href="{% url 'home:report' %}">Report</a>
+      <a href="{% url 'home:teachers' %}">Teachers</a>
+      <a href="{% url 'home:centers' %}">Courses</a>
+      <a href="{% url 'home:help' %}">Help</a>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Quick page find">
+      <button>Search</button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="{% url 'home:account' %}">Account</a></li>
+        <li><a href="{% url 'home:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'home:courses' %}">Courses</a></li>
+        <li><a href="{% url 'home:results' %}">Results</a></li>
+        <li><a href="{% url 'home:documents' %}">Documents</a></li>
+        <li><a href="{% url 'home:calendar' %}">Calendar</a></li>
+        <li><a href="{% url 'home:chat' %}">Chat</a></li>
+        <li><a href="{% url 'home:notifications' %}">Notifications</a></li>
+        <li class="exit-btn"><a href="{% url 'home:exit' %}">Exit</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Đàm Đức Dũng - lớp 25Python01 - 24</p>
+  </footer>
+  {% block script %}{% endblock %}
+</body>
+</html>
