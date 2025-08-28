@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Calendar{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'home/css/calendar.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="calendar-container">
+    <div class="card p-4">
+        <div class="calendar-header mb-3">
+            <button id="today-btn" style="padding:6px 14px; border:none; background-color:#ff3b30; color:white; border-radius:20px; font-size:1rem;">
+                Hôm nay
+            </button>
+            <h2 style="font-size:2rem; margin:0;">{{ month }}/{{ year }} 
+                <span id="current-time" style="font-size:1rem; font-weight:normal;"></span>
+            </h2>
+        </div>
+
+        <div class="calendar-grid">
+            {% for day in weekdays %}
+                <div class="calendar-weekday">{{ day }}</div>
+            {% endfor %}
+
+            {% for day in month_days %}
+                <div class="calendar-cell {% if day == today.date %}today{% endif %} 
+                            {% if day.month != month %}other-month{% endif %}" id="day-{{ day }}">
+                    <span class="date-number">{{ day.day }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+
+</style>
+{% block script %}
+  <script src="{% static 'home/js/calendar.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

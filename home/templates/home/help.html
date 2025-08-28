@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Trung tâm{% endblock %}
+
+{% block style %}
+<style>
+:root{
+  --primary-color:#007aff;
+  --card-bg: rgba(255,255,255,0.85);
+  --card-shadow: rgba(0,0,0,0.15);
+  --border-radius:20px;
+}
+
+/* Card */
+.container{ max-width:800px; margin:40px auto; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+.card{ background:var(--card-bg); backdrop-filter: blur(14px); border-radius:var(--border-radius); box-shadow:0 12px 28px var(--card-shadow); padding:24px; transition:all 0.3s;}
+.card:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,0.2);}
+.card h2{ font-size:24px; margin-top:0; }
+.card p.sub{ font-size:16px; color:#555; margin-bottom:12px;}
+.card ul{ list-style:none; padding-left:0; }
+.card ul li{ margin:10px 0; padding:10px 12px; border-radius:12px; transition:all 0.3s; cursor:pointer; background: rgba(0,0,0,0.02);}
+.card ul li:hover{ background: rgba(0,122,255,0.1); transform:scale(1.02); }
+
+/* Dark Mode */
+@media(prefers-color-scheme:dark){
+  .card{ background: rgba(30,30,30,0.85); color:#fff;}
+  .card p.sub{ color:#ccc;}
+  .card ul li{ background: rgba(255,255,255,0.05); color:#ddd;}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>Trợ giúp & Trung tâm</h2>
+    <p class="sub">Hướng dẫn sử dụng hệ thống và hỗ trợ người dùng.</p>
+    <ul>
+      <li>❓ Câu hỏi thường gặp</li>
+      <li>📞 Liên hệ bộ phận hỗ trợ</li>
+      <li>📚 Hướng dẫn sử dụng hệ thống</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

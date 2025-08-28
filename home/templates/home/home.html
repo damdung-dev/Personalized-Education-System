@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block style %}
+<style>
+:root {
+    --primary-color: #007aff;
+    --secondary-color: #00cfff;
+    --card-bg: rgba(255,255,255,0.85);
+    --card-shadow: rgba(0,0,0,0.12);
+    --border-radius: 20px;
+    --transition-speed: 0.3s;
+}
+
+/* ===== Container Cards ===== */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    border-radius: var(--border-radius);
+    padding: 24px 32px;
+    margin: 24px auto;
+    max-width: 720px;
+    box-shadow: 0 12px 28px var(--card-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed);
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+}
+
+/* ===== Welcome Card ===== */
+.welcome h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111;
+}
+.welcome .sub {
+    font-size: 16px;
+    color: #555;
+    margin-top: 6px;
+}
+
+/* ===== Stats Card ===== */
+.status-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+}
+.status {
+    flex: 1 1 150px;
+    min-width: 150px;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), background var(--transition-speed);
+}
+.status span {
+    display: block;
+    font-size: 24px;
+    margin-top: 8px;
+}
+.status.assigned { background: linear-gradient(135deg,#007aff,#00cfff); color:white; }
+.status.sent { background: linear-gradient(135deg,#ff9800,#ffb74d); color:white; }
+.status.signed { background: linear-gradient(135deg,#9c27b0,#ba68c8); color:white; }
+.status.approved { background: linear-gradient(135deg,#4caf50,#81c784); color:white; }
+.status:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+}
+
+/* ===== Chart Card ===== */
+.chart {
+    text-align: center;
+}
+.chart h2 { font-size: 24px; margin-bottom: 16px; color: #111; }
+
+/* Responsive */
+@media(max-width:768px){
+    .status-boxes { flex-direction: column; }
+    .card { padding: 18px 20px; margin:16px; }
+}
+@media (prefers-color-scheme: dark){
+    .card { background: rgba(30,30,30,0.85); color: #fff; }
+    .welcome .sub { color: #ccc; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card welcome">
+  <h2>Welcome to the Dashboard</h2>
+  <p class="sub">Hi {{ user.first_name }}, explore your account and activities here.</p>
+</div>
+
+<div class="card stats">
+  <h2>Quick Stats</h2>
+  <div class="status-boxes">
+    <div class="status assigned">
+      Studying Courses<br><span>{{ ongoing_courses }}</span>
+    </div>
+    <div class="status sent">
+      Results<br><span>{{ completed_courses }} Completed</span>
+    </div>
+    <div class="status signed">
+      Documents<br><span>{{ documents_count }}</span>
+    </div>
+    <div class="status approved">
+      Progress<br><span>{{ avg_progress }}%</span>
+    </div>
+  </div>
+</div>
+
+<div class="card chart">
+  <h2>Learning Progress</h2>
+  <canvas id="progressChart" style="max-width:600px; max-height:400px;"></canvas>
+
+  <h2 style="margin-top:32px;">User Activity</h2>
+  <canvas id="activityChart" style="max-width:600px; max-height:400px;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* === Doughnut Chart: Courses === */
+const ctx = document.getElementById('progressChart').getContext('2d');
+const gradientCompleted = ctx.createLinearGradient(0,0,0,400);
+gradientCompleted.addColorStop(0,'#4caf50');
+gradientCompleted.addColorStop(1,'#81c784');
+const gradientOngoing = ctx.createLinearGradient(0,0,0,400);
+gradientOngoing.addColorStop(0,'#ff9800');
+gradientOngoing.addColorStop(1,'#ffb74d');
+
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Completed', 'Ongoing'],
+    datasets: [{
+      label: 'Courses',
+      data: [{{ completed_courses|default:0 }}, {{ ongoing_courses|default:0 }}],
+      backgroundColor: [gradientCompleted, gradientOngoing],
+      borderWidth: 1,
+      borderColor: '#fff',
+      hoverOffset: 10
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { 
+        position: 'bottom', 
+        labels:{color: 'inherit', font:{size:14,weight:'600'}} 
+      },
+      tooltip:{mode:'index', intersect:false}
+    },
+    animation: { animateScale:true, animateRotate:true },
+    cutout:'60%'
+  }
+});
+
+/* === Line Chart: User Actions === */
+const activityCtx = document.getElementById('activityChart').getContext('2d');
+const activityDates = JSON.parse('{{ action_dates|escapejs }}');
+const activityCounts = JSON.parse('{{ action_counts|escapejs }}');
+
+new Chart(activityCtx, {
+  type: 'line',
+  data: {
+    labels: activityDates,
+    datasets: [{
+      label: 'User Actions',
+      data: activityCounts,
+      borderColor: '#007aff',
+      backgroundColor: 'rgba(0,122,255,0.2)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 5,
+      pointBackgroundColor: '#007aff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: true, labels:{color:'inherit'} }
+    },
+    scales: {
+      x: { title: { display:true, text:'Date' } },
+      y: { title: { display:true, text:'Duration (s)' }, beginAtZero:true }
+    }
+  }
+});
+
+</script>
+{% endblock %}

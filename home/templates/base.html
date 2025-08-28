@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Personalized Education System{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'home/css/base.css' %}">
+
+  <style>
+    /* Reset & Root */
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    :root {
+      --primary: #007aff;
+      --secondary: #00cfff;
+      --bg: #f0f2f5;
+      --card-bg: rgba(255,255,255,0.85);
+      --card-shadow: rgba(0,0,0,0.15);
+      --radius: 16px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --sidebar-collapsed: 60px;
+    }
+
+    /* Body layout: sticky footer */
+    body {
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;        /* toàn màn hình */
+      overflow-y: auto;         /* chỉ 1 scrollbar dọc */
+      overflow-x: auto;         /* chỉ 1 scrollbar ngang khi cần */
+    }
+
+    /* Header */
+    header.topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px;
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      box-shadow: 0 8px 20px var(--card-shadow);
+      position: sticky; top: 0; z-index: 1000;
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+    header.topbar .nav-links a {
+      margin-right: 20px; text-decoration: none; color: #111;
+      font-weight: 500; transition: var(--transition-speed);
+    }
+    header.topbar .nav-links a:hover { color: var(--primary); }
+    header.topbar .search-box { display:flex; align-items:center; }
+    header.topbar .search-box input {
+      padding: 6px 12px; border: none;
+      border-radius: 12px 0 0 12px; outline: none; width: 180px;
+    }
+    header.topbar .search-box button {
+      padding: 6px 12px; border: none;
+      background: var(--primary); color: #fff;
+      border-radius: 0 12px 12px 0; cursor: pointer;
+      transition: var(--transition-speed);
+    }
+    header.topbar .search-box button:hover { background: #005bb5; }
+
+    /* Layout */
+    .layout { display: flex; flex: 1; }
+
+    /* Sidebar */
+    aside.sidebar {
+      width: var(--sidebar-width);
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      padding: 20px 12px;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      height: auto;
+      position: sticky; top: 64px;
+      overflow-y: auto;
+      transition: width var(--transition-speed);
+    }
+    aside.sidebar.collapsed { width: var(--sidebar-collapsed); }
+    aside.sidebar ul { list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 12px; }
+    aside.sidebar ul li a {
+      display: flex; padding: 10px 16px; border-radius: 12px;
+      color: #111; text-decoration: none; font-weight: 500;
+      transition: all var(--transition-speed);
+      white-space: nowrap;
+    }
+    aside.sidebar ul li a span.icon { margin-right: 12px; font-size: 18px; width: 20px; }
+    aside.sidebar ul li a:hover { background: var(--primary); color: #fff; }
+    aside.sidebar ul li.exit-btn a { background: var(--card-bg); color: #111; }
+    aside.sidebar ul li.exit-btn:hover a { background: #ff3b30; color: #fff; }
+
+    /* Main content */
+    main.main-content {
+      flex: 1;
+      padding: 32px 24px;
+    }
+
+    /* Footer luôn ở cuối */
+    footer.footer {
+      padding: 12px 24px;
+      text-align: center;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 -4px 20px var(--card-shadow);
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+  {% block style %}{% endblock %}
+</head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="nav-links">
+      <a href="{% url 'home:teachers' %}">Giáo viên</a>
+      <a href="{% url 'home:courses_current' %}">Khóa học</a>
+      <a href="{% url 'home:help' %}">Trợ giúp</a>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Quick page find">
+      <button>Search</button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <ul>
+        <li><a href="{% url 'home:account' %}"><span class="icon">👤</span>Tài khoản</a></li>
+        <li><a href="{% url 'home:dashboard' %}"><span class="icon">🏠</span>Trang chủ</a></li>
+        <li><a href="{% url 'home:courses' %}"><span class="icon">📚</span>Khóa học</a></li>
+        <li><a href="{% url 'home:results' %}"><span class="icon">📊</span>Kết quả</a></li>
+        <li><a href="{% url 'home:documents' %}"><span class="icon">📄</span>Tài liệu</a></li>
+        <li><a href="{% url 'home:calendar' %}"><span class="icon">📅</span>Lịch</a></li>
+        <li><a href="{% url 'home:chat' %}"><span class="icon">💬</span>Chat</a></li>
+        <li><a href="{% url 'home:notifications' %}"><span class="icon">🔔</span>Thông báo</a></li>
+        <li class="exit-btn"><a href="{% url 'home:exit' %}"><span class="icon">🚪</span>Đăng xuất</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Đàm Đức Dũng - lớp 25Python01 - 24</p>
+  </footer>
+
+  {% block script %}
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    function toggleSidebar() {
+      sidebar.classList.toggle('collapsed');
+    }
+  </script>
+  {% endblock %}
+</body>
+</html>

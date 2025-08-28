@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+:root {
+    --primary-color: #007aff;
+    --secondary-color: #00cfff;
+    --success-color: #28a745;
+    --danger-color: #ff3b30;
+    --card-bg: rgba(255,255,255,0.85);
+    --card-shadow: rgba(0,0,0,0.12);
+    --border-radius: 20px;
+    --transition-speed: 0.3s;
+}
+
+/* ===== Container ===== */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ===== Cards ===== */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    border-radius: var(--border-radius);
+    box-shadow: 0 12px 28px var(--card-shadow);
+    margin-bottom: 32px;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+}
+
+/* ===== Card Headers ===== */
+.card-header {
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+.bg-primary { background: linear-gradient(135deg,#007aff,#00cfff)!important; }
+.bg-success { background: linear-gradient(135deg,#28a745,#5cd65c)!important; }
+.card-header h2 { margin: 0; }
+
+/* ===== Table ===== */
+.table-responsive {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+thead tr {
+    background-color: rgba(240,241,244,0.9);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+    transition: background var(--transition-speed);
+}
+tbody tr:hover {
+    background: rgba(0,122,255,0.05);
+    transform: scale(1.01);
+}
+
+/* ===== Buttons ===== */
+button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+button:active {
+    transform: translateY(0) scale(0.98);
+}
+.bg-danger { background: var(--danger-color); color:white; }
+.bg-success-btn { background: var(--success-color); color:white; }
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+    th, td { padding: 10px; font-size: 13px; }
+    button { padding: 5px 10px; font-size: 13px; }
+    .container { margin: 20px; }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark){
+    .card { background: rgba(30,30,30,0.85); color: #fff; }
+    th, td { border-color: #555; color: #ddd; }
+    tbody tr:hover { background: rgba(0,122,255,0.15); }
+    .card-header { color:#fff; }
+    button { box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Card Khóa học của tôi -->
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Khóa học của tôi</h2>
+        </div>
+        <div class="card-body">
+            {% if my_courses %}
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã học phần</th>
+                                <th>Tên học phần</th>
+                                <th>Số tín chỉ</th>
+                                <th>Trạng thái</th>
+                                <th>Tình trạng lớp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course in my_courses %}
+                                <tr>
+                                    <td>{{ course.code }}</td>
+                                    <td>{{ course.name }}</td>
+                                    <td>{{ course.credits }}</td>
+                                    <td>{{ course.get_status_display }}</td>
+                                    <td>
+                                        <form method="POST" action="{% url 'home:course_detail' course.code %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="bg-danger">Xem khóa học</button>
+                                        </form>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">Bạn chưa có khóa học nào.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Card Khóa học hiện có -->
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0">Khóa học hiện có</h2>
+        </div>
+        <div class="card-body">
+            {% if suggested_courses %}
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã học phần</th>
+                                <th>Tên học phần</th>
+                                <th>Số tín chỉ</th>
+                                <th>Trạng thái</th>
+                                <th>Đăng ký</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course in suggested_courses %}
+                                <tr>
+                                    <td>{{ course.code }}</td>
+                                    <td>{{ course.name }}</td>
+                                    <td>{{ course.credits }}</td>
+                                    <td>{{ course.get_status_display }}</td>
+                                    <td>
+                                        <button class="bg-danger" type="button"
+                                            onclick="confirmRegister('{% url 'home:register_course' course.code %}')">
+                                            Đăng ký
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">Không có khóa học đề xuất nào.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+async function confirmRegister(url) {
+    try {
+        console.log("Register URL:", url);
+
+        if (!confirm("Bạn có chắc chắn muốn đăng ký khóa học này?")) return;
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        alert(data.message);
+
+        if (data.success) {
+            location.reload();
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        alert("Lỗi khi gửi request: " + err.message);
+    }
+}
+</script>
+
+{% endblock %}
+
+

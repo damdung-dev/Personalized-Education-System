@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Bài học video{% endblock %}
+
+{% block content %}
+<div class="lesson-container">
+    <div class="video-wrapper">
+        <video id="lesson-video" controls autoplay muted playsinline class="lesson-video">
+            <source src="{{ lesson.video_file.url }}" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
+
+    </div>
+
+    <div class="lesson-actions">
+        <button onclick="logAction('back'); window.history.back()" class="btn-back">⬅️ Quay lại</button>
+        <button onclick="markDone()" class="btn-done">✅ Hoàn thành</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+.lesson-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f8f9fa;
+}
+.video-wrapper {
+    width: 80%;
+    max-width: 900px;
+}
+.lesson-video {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.lesson-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+.lesson-actions button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.btn-back {
+    background-color: #007bff;
+    color: white;
+}
+.btn-done {
+    background-color: #28a745;
+    color: white;
+}
+.btn-back:hover { background-color: #0056b3; }
+.btn-done:hover { background-color: #218838; }
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+const lessonId = "{{ lesson.id }}";
+
+// Hàm gửi action về server
+function logAction(action) {
+    fetch(`/home/log_action/${lessonId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "action=" + action
+    });
+}
+
+// Khi video bắt đầu → log "play"
+document.getElementById("lessonVideo").addEventListener("play", () => {
+    logAction("play");
+});
+
+// Khi pause → log "pause"
+document.getElementById("lessonVideo").addEventListener("pause", () => {
+    logAction("pause");
+});
+
+// Khi kết thúc → log "done"
+document.getElementById("lessonVideo").addEventListener("ended", () => {
+    logAction("done");
+});
+
+// Khi thoát tab hoặc reload → log "back"
+window.addEventListener("beforeunload", () => {
+    logAction("back");
+});
+</script>
+{% endblock %}

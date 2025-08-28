@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --primary-color: #007aff;
+    --card-bg: rgba(255,255,255,0.85);
+    --card-shadow: rgba(0,0,0,0.12);
+    --hover-bg: rgba(240,248,255,0.6);
+}
+
+/* Container */
+.notifications-container {
+    max-width: 720px;
+    margin: 40px auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    border-radius: 28px;
+    box-shadow: 0 14px 28px var(--card-shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+.notifications-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+}
+.notifications-header h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 28px;
+    color: #111;
+}
+.filter-btns {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.filter-btn {
+    background: rgba(0,122,255,0.1);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.filter-btn.active {
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,122,255,0.3);
+}
+.filter-btn:hover { transform: scale(1.05); }
+
+/* Notification List */
+.notifications-list { display: flex; flex-direction: column; }
+.notification-item {
+    display: flex;
+    padding: 18px 24px;
+    align-items: flex-start;
+    background-color: #ffffff;
+    border-radius: 16px;
+    margin: 8px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+}
+.notification-item.show { opacity:1; transform: translateY(0);}
+.notification-item:hover {
+    background-color: var(--hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.notification-item img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: 18px;
+}
+.notification-content p { margin: 2px 0; }
+.notification-title { font-weight: 600; font-size: 16px; color: #111; }
+.notification-text { font-size: 14px; color: #555; }
+.notification-time { font-size: 12px; color: #999; margin-top: 4px; }
+.unread-dot {
+    width: 12px; height: 12px; background-color: #ff3b30;
+    border-radius: 50%; margin-left: 12px; margin-top:6px; flex-shrink:0;
+    animation: pulse 1.2s infinite;
+}
+
+/* Footer */
+.notifications-footer {
+    padding: 18px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+.notifications-footer button {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.notifications-footer button:hover {
+    color: #005bb5;
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .notifications-container { background: rgba(30,30,30,0.85);}
+    .notification-item { background-color: rgba(50,50,50,0.85); border-bottom:1px solid rgba(255,255,255,0.08);}
+    .notification-title { color:#fff;}
+    .notification-text { color:#ccc;}
+    .notification-time { color:#aaa;}
+    .filter-btn { background: rgba(0,122,255,0.2); color: #007aff;}
+    .filter-btn.active { color: #fff;}
+}
+
+/* Responsive */
+@media (max-width:768px) {
+    .notifications-container { margin:20px; border-radius:24px; }
+    .notification-item { padding:14px 16px; margin:6px 10px; }
+    .filter-btns { gap:6px; }
+}
+</style>
+
+<div class="notifications-container">
+
+    <!-- Header -->
+    <div class="notifications-header">
+        <h2>Notifications</h2>
+        <div class="filter-btns">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="unread">Unread</button>
+            <button class="filter-btn" data-filter="today">Today</button>
+            <button class="filter-btn" data-filter="week">This Week</button>
+        </div>
+    </div>
+
+    <!-- Notifications List -->
+    <div class="notifications-list" id="notifications-list">
+        {% for notification in notifications %}
+        <div class="notification-item" data-unread="{{ notification.unread|yesno:'true,false' }}">
+            <img src="{{ notification.icon_url }}" alt="icon">
+            <div class="notification-content">
+                <p class="notification-title">{{ notification.title }}</p>
+                <p class="notification-text">{{ notification.content }}</p>
+                <span class="notification-time">{{ notification.time_ago }}</span>
+            </div>
+            {% if notification.unread %}<div class="unread-dot"></div>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <div class="notifications-footer">
+        <button id="load-more-btn">See previous notifications</button>
+    </div>
+</div>
+
+<script>
+// ===== Fade-in Animation =====
+const notificationItems = document.querySelectorAll('.notification-item');
+notificationItems.forEach((item, idx) => {
+    setTimeout(() => item.classList.add('show'), idx*100);
+});
+
+// ===== Filter functionality =====
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        notificationItems.forEach(n => {
+            let show = true;
+            if(filter==='unread' && n.dataset.unread!=='true') show=false;
+            n.style.display = show ? 'flex' : 'none';
+        });
+    });
+});
+
+// ===== Simulate Realtime Notifications =====
+const list = document.getElementById('notifications-list');
+function addNotification(title, content, icon, unread=true){
+    const div = document.createElement('div');
+    div.className = 'notification-item';
+    div.dataset.unread = unread ? 'true':'false';
+    div.innerHTML = `
+        <img src="${icon}" alt="icon">
+        <div class="notification-content">
+            <p class="notification-title">${title}</p>
+            <p class="notification-text">${content}</p>
+            <span class="notification-time">Just now</span>
+        </div>
+        ${unread?'<div class="unread-dot"></div>':''}
+    `;
+    list.prepend(div);
+    setTimeout(()=>div.classList.add('show'),50);
+
+    // Add swipe gesture
+    addSwipe(div);
+}
+
+// Simulate every 5-10s
+setInterval(()=>{
+    addNotification(
+        "New message",
+        "You received a new message!",
+        "https://via.placeholder.com/50"
+    );
+}, Math.random()*5000 + 5000);
+
+// ===== Swipe Gesture =====
+function addSwipe(item){
+    let startX=0,currentX=0,moving=false;
+    item.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; moving=true; });
+    item.addEventListener('touchmove', e=>{
+        if(!moving) return;
+        currentX=e.touches[0].clientX;
+        let dx=currentX-startX;
+        item.style.transform=`translateX(${dx}px)`;
+    });
+    item.addEventListener('touchend', e=>{
+        moving=false;
+        let dx=currentX-startX;
+        if(dx<-100){ item.style.transition='transform 0.3s, opacity 0.3s'; item.style.opacity=0; setTimeout(()=>item.remove(),300);}
+        else if(dx>100){ item.querySelector('.unread-dot')?.remove(); item.style.transition='transform 0.3s'; item.style.transform='translateX(0)'; }
+        else { item.style.transition='transform 0.3s'; item.style.transform='translateX(0)'; }
+    });
+}
+
+// Add swipe to existing items
+notificationItems.forEach(addSwipe);
+
+// ===== Load more simulation =====
+document.getElementById('load-more-btn').addEventListener('click', ()=>{
+    for(let i=0;i<5;i++){
+        addNotification(
+            "Older Notification",
+            "This is an older notification",
+            "https://via.placeholder.com/50",
+            Math.random()>0.5
+        );
+    }
+});
+</script>
+{% endblock %}

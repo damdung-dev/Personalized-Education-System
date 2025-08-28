@@ -1,0 +1,9 @@
+.calendar-container { max-width: 900px; margin: 50px auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.calendar-weekday { font-weight: bold; text-align: center; padding: 12px 0; background-color: #f0f1f4; border-radius: 8px; font-size: 1.2rem; }
+.calendar-cell { min-height: 100px; padding: 10px; border-radius: 12px; position: relative; background-color: #fff; box-shadow: 0 3px 6px rgba(0,0,0,0.1); font-size: 1.2rem; transition: transform 0.2s; }
+.calendar-cell:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+.calendar-cell.today { border: 3px solid #007aff; background-color: #e6f0ff; }
+.calendar-cell.other-month { opacity: 0.3; }
+.date-number { position: absolute; top: 10px; right: 10px; font-weight: bold; font-size: 1.4rem; }

@@ -1,0 +1,181 @@
+.messages-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f2f2f7;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages-header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.messages-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.header-actions input,
+.header-actions select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    flex: 1;
+    background-color: #fff;
+}
+
+.header-actions button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #007aff;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.header-actions button:hover {
+    background-color: #005bb5;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #e5e5ea;
+    margin-bottom: 15px;
+}
+
+.tabs .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 20px 20px 0 0;
+    margin-right: 10px;
+    background-color: #f2f2f7;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.tabs .tab.active {
+    background-color: #fff;
+    border-bottom: 2px solid #fff;
+    font-weight: 600;
+    color: #007aff;
+}
+
+/* Message Card */
+.messages-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.message-card {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.message-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.message-card.new {
+    border-left: 4px solid #007aff;
+}
+
+.message-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #000;
+}
+
+.message-time {
+    font-size: 0.85rem;
+    color: #8e8e93;
+    margin-bottom: 10px;
+}
+
+.message-body {
+    font-size: 0.95rem;
+    color: #3c3c43;
+    line-height: 1.4;
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #ff3b30;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.page-btn {
+    padding: 8px 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.page-btn:hover {
+    background-color: #f2f2f7;
+}
+
+/* No messages */
+.no-messages {
+    text-align: center;
+    font-size: 1rem;
+    color: #8e8e93;
+    padding: 40px 0;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background-color: #1c1c1e;
+    color: #f2f2f7;
+}
+
+body.dark-mode .message-card {
+    background-color: #2c2c2e;
+    color: #f2f2f7;
+}
+
+body.dark-mode .message-card.new {
+    border-left-color: #0a84ff;
+}
