@@ -4,7 +4,7 @@ from signup.models import Student
 from .forms import DocumentUploadForm
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from datetime import datetime
+from llama_cpp import Llama
 from datetime import datetime
 import calendar
 from django.utils.timezone import make_naive
@@ -310,10 +310,51 @@ def help_page(request):
 
 def login_view(request):
     return render(request, "login/login.html")
-
+#=========== chatbot====================
 def chat(request):
     return render(request, "home/chat.html")
+# ==============================
+# Load model PhoGPT-4B-Chat GGUF khi server start
+# ==============================
+llm = Llama(
+    model_path=r"C:\Users\dungdam\.cache\huggingface\hub\models--vinai--PhoGPT-4B-Chat-gguf\snapshots\192f8ac548e5012d28d8703111842c49fef39271\PhoGPT-4B-Chat-Q4_K_M.gguf",
+    n_gpu_layers=-1,   # -1 = dùng toàn bộ GPU
+    n_ctx=8192
+)
 
+# ==============================
+# Hàm tạo reply từ model
+# ==============================
+def generate_reply(user_message):
+    prompt = f"""Bạn là trợ lý AI thông minh, trả lời tiếng Việt rõ ràng, ngắn gọn và đúng ngữ cảnh.
+    Người dùng: {user_message}
+    AI:"""
+    output = llm(prompt, max_tokens=256, temperature=0.7)
+    return output['choices'][0]['text'].strip() if output.get('choices') else "[AI không trả lời được]"
+
+# ==============================
+# View API chat
+# ==============================
+def chat_api(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            message = data.get("message", "").strip()
+            if not message:
+                reply = "Xin vui lòng nhập tin nhắn"
+            else:
+                try:
+                    reply = generate_reply(message)
+                except Exception as e:
+                    print("Lỗi generate_reply:", e)
+                    reply = "[AI không trả lời được, lỗi GPU]"
+            return JsonResponse({"reply": reply})
+        except Exception as e:
+            print("Lỗi chat_api:", e)
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
+#==============================================#
 def lesson_detail(request, lesson_id):
     lesson = get_object_or_404(ListLesson, id=lesson_id)
     return render(request, "home/lessons.html", {"lesson": lesson})

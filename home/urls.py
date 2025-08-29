@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views,views_chat
+from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path('account/', views.account_view,name='account'),
     path('courses/', views.courses_view,name='courses'),
     path('calendar/', views.calendar_view,name='calendar'),
-    path('chat/', views_chat.chat_page,name='chat'),
+    path('chat/', views.chat,name='chat'),
     path('notification/', views.notification_view,name='notifications'),
     path('results/', views.results_view,name='results'),
     path('documents/', views.documents_view,name='documents'),
@@ -21,8 +21,9 @@ urlpatterns = [
     path('login/', views.login_view, name='exit'),
     path('course/<str:code>/', views.course_detail, name='course_detail'),
     path('register-course/<str:code>/', views.register_course, name='register_course'),
-    path('chat/api/', views_chat.chat_api, name='chat_api'),
+    path('chat/api/', views.chat_api, name='chat_api'),
     path('lesson/<int:lesson_id>/', views.lesson_detail, name='lessons_page'),
     path('lesson/<int:lesson_id>/log-action/', views.log_action, name='log_action'),
     
 ]
+#

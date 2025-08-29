@@ -4,8 +4,9 @@
 {% block title %}Chat Assistant{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'home/css/chat.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
 .chat-container {
     display: flex;
@@ -18,101 +19,44 @@
     overflow: hidden;
     background: #fff;
 }
+.chat-header { padding: 15px; background: #2563eb; color: white; font-weight: bold; text-align: center; }
+.chat-messages { flex: 1; padding: 20px; overflow-y: auto; background: #f9fafb; }
+.chat-message { margin-bottom: 12px; display: flex; max-width: 70%; }
+.chat-message.user { justify-content: flex-end; margin-left: auto; }
+.chat-message.user p { background: #2563eb; color: white; border-radius: 20px 20px 0 20px; }
+.chat-message.assistant p { background: #e5e7eb; color: #111; border-radius: 20px 20px 20px 0; }
+.chat-message p { padding: 10px 15px; word-wrap: break-word; font-size: 15px; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.chat-input { display: flex; align-items: center; padding: 10px; border-top: 1px solid #ddd; background: #fff; gap: 8px; }
+.chat-input input[type="text"] { flex: 1; border: none; outline: none; padding: 10px 15px; border-radius: 20px; background: #f3f4f6; font-size: 14px; }
 
-.chat-header {
-    padding: 15px;
-    background: #2563eb;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: #f9fafb;
-}
-
-.chat-message {
-    margin-bottom: 12px;
-    display: flex;
-    max-width: 70%;
-}
-
-.chat-message.user {
-    justify-content: flex-end;
-    margin-left: auto;
-}
-
-.chat-message.user p {
-    background: #2563eb;
-    color: white;
-    border-radius: 20px 20px 0 20px;
-}
-
-.chat-message.assistant p {
-    background: #e5e7eb;
-    color: #111;
-    border-radius: 20px 20px 20px 0;
-}
-
-.chat-message p {
-    padding: 10px 15px;
-    word-wrap: break-word;
-    font-size: 15px;
-    line-height: 1.4;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.chat-input {
+/* Nút icon */
+.icon-btn, .send-btn {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    background: #fff;
-    gap: 8px;
-}
-
-.chat-input input {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    background: #f3f4f6;
-    font-size: 14px;
-}
-
-.icon-btn, .send-btn {
-    background: none;
-    border: none;
+    justify-content: center;
     cursor: pointer;
-    font-size: 18px;
-    color: #555;
     transition: 0.2s;
+    padding: 0;
 }
-
-.icon-btn:hover, .send-btn:hover {
-    color: #2563eb;
+.icon-btn img, .send-btn img {
+    width: 24px;  /* scale vừa với nút */
+    height: 24px;
 }
+.icon-btn { background: #fff; }
+.icon-btn:hover { background: #f3f4f6; }
 
-.send-btn {
-    background: #2563eb;
-    color: white;
-    padding: 10px 14px;
-    border-radius: 50%;
-    font-size: 16px;
-}
-
+.send-btn { background: #2563eb; }
+.send-btn:hover { background: #1d4ed8; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="chat-container">
-    <div class="chat-header">
-        🤖 Trợ lý ảo
-    </div>
+    <div class="chat-header">🤖 Trợ lý ảo</div>
 
     <div class="chat-messages" id="chat-messages">
         <div class="chat-message assistant">
@@ -122,23 +66,18 @@
 
     <div class="chat-input">
         <button class="icon-btn" id="emoji-btn" title="Chèn emoji">
-            <i class="fa-regular fa-face-smile"></i>
+            <img src="{% static 'home/images/3561853_emoji_emoticon_happy_laugh_icon.png' %}" alt="Emoji">
         </button>
-
-        <button class="attachment-icon">
-            <i class="fa-solid fa-paperclip"></i>
+        <button class="icon-btn" id="attachment-btn" title="Đính kèm file">
+            <img src="{% static 'home/images/352032_attach_file_icon.png' %}" alt="Attach">
         </button>
-
         <input type="file" id="file-input" style="display:none;">
-
         <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
-
         <button class="icon-btn" id="voice-btn" title="Ghi âm">
-            <i class="fa-solid fa-microphone"></i>
+            <img src="{% static 'home/images/2205213_mic_microphone_record_speak_icon.png' %}" alt="Mic">
         </button>
-
-        <button id="send-btn" class="send-btn">
-            <i class="fa-solid fa-paper-plane"></i>
+        <button id="send-btn" class="send-btn" title="Gửi">
+            <img src="{% static 'home/images/7830825_send_email_icon.png' %}" alt="Send">
         </button>
     </div>
 </div>
@@ -146,45 +85,32 @@
 
 {% block script %}
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+// Lấy CSRF token từ cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
 
+document.addEventListener("DOMContentLoaded", function(){
     const sendBtn = document.getElementById("send-btn");
     const messageInput = document.getElementById("message-input");
     const fileInput = document.getElementById("file-input");
     const voiceBtn = document.getElementById("voice-btn");
+    const emojiBtn = document.getElementById("emoji-btn");
+    const attachmentBtn = document.getElementById("attachment-btn");
     const chatMessages = document.getElementById("chat-messages");
 
-    // Gửi tin nhắn
-    function sendMessage(){
-        const message = messageInput.value.trim();
-        if(message === "") return;
-
-        appendMessage("user", message);
-        messageInput.value = "";
-
-        // Loading state
-        const loading = document.createElement("div");
-        loading.classList.add("chat-message", "assistant");
-        loading.innerHTML = `<p><i>AI đang trả lời...</i></p>`;
-        chatMessages.appendChild(loading);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        console.log("Gửi message:", message);
-        fetch("{% url 'home:chat_api' %}", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({message: message})
-        })
-        .then(res => {
-            console.log("Response status:", res.status);
-            return res.json();
-        })
-        .then(data => console.log("Data:", data))
-        .catch(err => console.error("Fetch error:", err));
-
-        }
-
-    // Thêm tin nhắn vào chat
     function appendMessage(sender, text){
         const div = document.createElement("div");
         div.classList.add("chat-message", sender);
@@ -193,36 +119,54 @@ document.addEventListener("DOMContentLoaded", function(){
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Event click gửi
+    function sendMessage(){
+        const message = messageInput.value.trim();
+        if(message === "") return;
+        appendMessage("user", message);
+        messageInput.value = "";
+
+        const loading = document.createElement("div");
+        loading.classList.add("chat-message", "assistant");
+        loading.innerHTML = `<p><i>AI đang trả lời...</i></p>`;
+        chatMessages.appendChild(loading);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        fetch("{% url 'home:chat_api' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({message: message})
+        })
+        .then(res => {
+            if(!res.ok) throw new Error("HTTP error " + res.status);
+            return res.json();
+        })
+        .then(data => {
+            chatMessages.removeChild(loading);
+            appendMessage("assistant", data.reply || "[Không có phản hồi]");
+        })
+        .catch(err => {
+            chatMessages.removeChild(loading);
+            appendMessage("assistant", "[Lỗi gửi tin nhắn]");
+            console.error("Fetch error:", err);
+        });
+    }
+
     sendBtn.addEventListener("click", sendMessage);
-
-    // Event Enter gửi
     messageInput.addEventListener("keypress", function(e){
-        if(e.key === "Enter"){
-            e.preventDefault();
-            sendMessage();
-        }
+        if(e.key === "Enter"){ e.preventDefault(); sendMessage(); }
     });
 
-    // Emoji demo
-    document.getElementById("emoji-btn").addEventListener("click", () => {
-        messageInput.value += " 😊";
-        messageInput.focus();
-    });
-
-    // File demo
+    emojiBtn.addEventListener("click", () => { messageInput.value += " 😊"; messageInput.focus(); });
+    attachmentBtn.addEventListener("click", () => { fileInput.click(); });
     fileInput.addEventListener("change", (e) => {
         if(e.target.files.length > 0){
             appendMessage("user", "[Đã chọn file: " + e.target.files[0].name + "]");
         }
     });
-
-    // Voice demo
-    voiceBtn.addEventListener("click", () => {
-        appendMessage("user", "[Ghi âm sẽ được hỗ trợ sau]");
-    });
-
+    voiceBtn.addEventListener("click", () => { appendMessage("user", "[Ghi âm sẽ được hỗ trợ sau]"); });
 });
 </script>
 {% endblock %}
-
